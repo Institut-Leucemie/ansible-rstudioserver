@@ -14,8 +14,9 @@ conda_env_name: bioinfo
 r_packages:
   - r-base
   - r-seurat
-  - r-infercnv
+  - bioconductor-infercnv
   - r-biocmanager
+  - jags
 
 # RStudio Server
 rstudio_version: "2026.01.2-418"

@@ -32,9 +32,14 @@
 - name: Create user account
   ansible.builtin.user:
     name: "{{ rstudio_user }}"
-    password: "{{ rstudio_password | password_hash('sha512') }}"
     shell: /bin/bash
     create_home: yes
+
+- name: Set user password
+  ansible.builtin.shell:
+    cmd: echo '{{ rstudio_user }}:{{ rstudio_password }}' | chpasswd
+  changed_when: true
+  no_log: true
 
 - name: Set ownership on data directory
   ansible.builtin.file:
