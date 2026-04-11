@@ -209,4 +209,4 @@ __marimo__/
 # secrets
 .env
 vault.yml
-
+.vault_pass
