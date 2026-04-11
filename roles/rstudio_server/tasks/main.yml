@@ -27,7 +27,24 @@
     state: present
 
 # ============================================================
-# 2. Block storage - Formatage et montage
+# 2. Utilisatrice
+# ============================================================
+- name: Create user account
+  ansible.builtin.user:
+    name: "{{ rstudio_user }}"
+    password: "{{ rstudio_password | password_hash('sha512') }}"
+    shell: /bin/bash
+    create_home: yes
+
+- name: Set ownership on data directory
+  ansible.builtin.file:
+    path: "{{ block_storage_mount }}"
+    owner: "{{ rstudio_user }}"
+    group: "{{ rstudio_user }}"
+    recurse: yes
+
+# ============================================================
+# 3. Block storage - Formatage et montage
 # ============================================================
 - name: Check if block storage is formatted
   ansible.builtin.command: blkid {{ block_storage_device }}
@@ -58,7 +75,7 @@
     state: mounted
 
 # ============================================================
-# 3. Miniforge / Conda
+# 4. Miniforge / Conda
 # ============================================================
 - name: Check if Miniforge is installed
   ansible.builtin.stat:
@@ -87,7 +104,7 @@
     creates: "{{ miniforge_install_dir }}/envs/{{ conda_env_name }}"
 
 # ============================================================
-# 4. RStudio Server
+# 5. RStudio Server
 # ============================================================
 - name: Check if RStudio Server is installed
   ansible.builtin.command: rstudio-server version
@@ -115,23 +132,6 @@
     group: root
     mode: "0644"
   notify: restart rstudio-server
-
-# ============================================================
-# 5. Utilisatrice
-# ============================================================
-- name: Create user account
-  ansible.builtin.user:
-    name: "{{ rstudio_user }}"
-    password: "{{ rstudio_password | password_hash('sha512') }}"
-    shell: /bin/bash
-    create_home: yes
-
-- name: Set ownership on data directory
-  ansible.builtin.file:
-    path: "{{ block_storage_mount }}"
-    owner: "{{ rstudio_user }}"
-    group: "{{ rstudio_user }}"
-    recurse: yes
 
 # ============================================================
 # 6. Rclone - Configuration S3 OVH
