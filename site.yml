@@ -1,0 +1,6 @@
+---
+- name: Deploy RStudio Server for bioinfo analysis
+  hosts: rstudio
+  become: true
+  roles:
+    - rstudio_server
