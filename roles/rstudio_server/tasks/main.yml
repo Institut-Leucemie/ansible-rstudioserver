@@ -1,0 +1,190 @@
+---
+# ============================================================
+# 1. OS - Mise à jour et paquets de base
+# ============================================================
+- name: Update apt cache and upgrade packages
+  ansible.builtin.apt:
+    update_cache: yes
+    upgrade: dist
+    cache_valid_time: 3600
+
+- name: Install base packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - gdebi-core
+      - libcurl4-openssl-dev
+      - libssl-dev
+      - libxml2-dev
+      - libhdf5-dev
+      - libgeos-dev
+      - libfontconfig1-dev
+      - libharfbuzz-dev
+      - libfribidi-dev
+      - rclone
+      - jq
+    state: present
+
+# ============================================================
+# 2. Block storage - Formatage et montage
+# ============================================================
+- name: Check if block storage is formatted
+  ansible.builtin.command: blkid {{ block_storage_device }}
+  register: blkid_result
+  failed_when: false
+  changed_when: false
+
+- name: Format block storage as ext4
+  ansible.builtin.filesystem:
+    fstype: ext4
+    dev: "{{ block_storage_device }}"
+  when: blkid_result.rc != 0
+
+- name: Create mount point
+  ansible.builtin.file:
+    path: "{{ block_storage_mount }}"
+    state: directory
+    owner: "{{ rstudio_user }}"
+    group: "{{ rstudio_user }}"
+    mode: "0755"
+
+- name: Mount block storage
+  ansible.builtin.mount:
+    path: "{{ block_storage_mount }}"
+    src: "{{ block_storage_device }}"
+    fstype: ext4
+    opts: defaults,nofail
+    state: mounted
+
+# ============================================================
+# 3. Miniforge / Conda
+# ============================================================
+- name: Check if Miniforge is installed
+  ansible.builtin.stat:
+    path: "{{ miniforge_install_dir }}/bin/mamba"
+  register: miniforge_installed
+
+- name: Download Miniforge installer
+  ansible.builtin.get_url:
+    url: "https://github.com/conda-forge/miniforge/releases/download/{{ miniforge_version }}/Miniforge3-{{ miniforge_version }}-Linux-x86_64.sh"
+    dest: /tmp/miniforge.sh
+    mode: "0755"
+  when: not miniforge_installed.stat.exists
+
+- name: Install Miniforge
+  ansible.builtin.command:
+    cmd: /tmp/miniforge.sh -b -p {{ miniforge_install_dir }}
+  when: not miniforge_installed.stat.exists
+
+- name: Create conda environment with R packages
+  ansible.builtin.command:
+    cmd: >
+      {{ miniforge_install_dir }}/bin/mamba create -y
+      -n {{ conda_env_name }}
+      -c conda-forge -c bioconda
+      {{ r_packages | join(' ') }}
+    creates: "{{ miniforge_install_dir }}/envs/{{ conda_env_name }}"
+
+# ============================================================
+# 4. RStudio Server
+# ============================================================
+- name: Check if RStudio Server is installed
+  ansible.builtin.command: rstudio-server version
+  register: rstudio_check
+  failed_when: false
+  changed_when: false
+
+- name: Download RStudio Server deb
+  ansible.builtin.get_url:
+    url: "https://download2.rstudio.org/server/jammy/amd64/rstudio-server-{{ rstudio_version }}-amd64.deb"
+    dest: /tmp/rstudio-server.deb
+  when: rstudio_check.rc != 0
+
+- name: Install RStudio Server
+  ansible.builtin.command:
+    cmd: gdebi -n /tmp/rstudio-server.deb
+  when: rstudio_check.rc != 0
+  notify: restart rstudio-server
+
+- name: Deploy rserver.conf
+  ansible.builtin.template:
+    src: rserver.conf.j2
+    dest: /etc/rstudio/rserver.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart rstudio-server
+
+# ============================================================
+# 5. Utilisatrice
+# ============================================================
+- name: Create user account
+  ansible.builtin.user:
+    name: "{{ rstudio_user }}"
+    password: "{{ rstudio_password | password_hash('sha512') }}"
+    shell: /bin/bash
+    create_home: yes
+
+- name: Set ownership on data directory
+  ansible.builtin.file:
+    path: "{{ block_storage_mount }}"
+    owner: "{{ rstudio_user }}"
+    group: "{{ rstudio_user }}"
+    recurse: yes
+
+# ============================================================
+# 6. Rclone - Configuration S3 OVH
+# ============================================================
+- name: Create rclone config directory
+  ansible.builtin.file:
+    path: "/home/{{ rstudio_user }}/.config/rclone"
+    state: directory
+    owner: "{{ rstudio_user }}"
+    group: "{{ rstudio_user }}"
+    mode: "0700"
+
+- name: Deploy rclone config
+  ansible.builtin.template:
+    src: rclone.conf.j2
+    dest: "/home/{{ rstudio_user }}/.config/rclone/rclone.conf"
+    owner: "{{ rstudio_user }}"
+    group: "{{ rstudio_user }}"
+    mode: "0600"
+
+# ============================================================
+# 7. Sync S3 au shutdown
+# ============================================================
+- name: Deploy S3 sync script
+  ansible.builtin.copy:
+    dest: /usr/local/bin/sync-data-s3.sh
+    mode: "0755"
+    content: |
+      #!/bin/bash
+      rclone sync {{ block_storage_mount }} {{ rclone_remote_name }}:{{ rclone_bucket }} \
+        --log-file=/var/log/rclone-sync.log \
+        --log-level INFO
+
+- name: Deploy systemd sync-on-shutdown service
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/sync-data-s3.service
+    content: |
+      [Unit]
+      Description=Sync data to S3 before shutdown
+      DefaultDependencies=no
+      Before=shutdown.target reboot.target halt.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/sync-data-s3.sh
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: reload systemd
+
+- name: Enable sync-on-shutdown service
+  ansible.builtin.systemd:
+    name: sync-data-s3
+    enabled: yes
+    state: started
