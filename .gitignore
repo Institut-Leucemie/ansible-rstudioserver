@@ -208,7 +208,6 @@ __marimo__/
 
 # secrets
 .vault_pass*
-vault.yml
 *.retry
 .env
 *.pem
