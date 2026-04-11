@@ -138,6 +138,15 @@
     mode: "0644"
   notify: restart rstudio-server
 
+- name: Deploy rsession.conf
+  ansible.builtin.template:
+    src: rsession.conf.j2
+    dest: /etc/rstudio/rsession.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart rstudio-server
+
 # ============================================================
 # 6. Rclone - Configuration S3 OVH
 # ============================================================
