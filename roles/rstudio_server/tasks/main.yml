@@ -206,3 +206,9 @@
     name: sync-data-s3
     enabled: yes
     state: started
+
+- name: Ensure rstudio-server is started
+  ansible.builtin.service:
+    name: rstudio-server
+    state: started
+    enabled: yes
