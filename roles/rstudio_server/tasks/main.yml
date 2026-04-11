@@ -181,12 +181,16 @@
 
       [Service]
       Type=oneshot
-      ExecStart=/usr/local/bin/sync-data-s3.sh
+      ExecStart=/bin/true
+      ExecStop=/usr/local/bin/sync-data-s3.sh
       RemainAfterExit=yes
 
       [Install]
       WantedBy=multi-user.target
-  notify: reload systemd
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
 
 - name: Enable sync-on-shutdown service
   ansible.builtin.systemd:
