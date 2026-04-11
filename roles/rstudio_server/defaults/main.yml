@@ -1,6 +1,6 @@
 ---
 # Utilisateur
-rstudio_user: marie
+rstudio_user: "{{ vault_rstudio_user }}"
 rstudio_password: "{{ vault_rstudio_password }}"
 
 # Block storage
