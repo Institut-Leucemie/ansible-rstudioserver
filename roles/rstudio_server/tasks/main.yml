@@ -41,13 +41,6 @@
   changed_when: true
   no_log: true
 
-- name: Set ownership on data directory
-  ansible.builtin.file:
-    path: "{{ block_storage_mount }}"
-    owner: "{{ rstudio_user }}"
-    group: "{{ rstudio_user }}"
-    recurse: yes
-
 # ============================================================
 # 3. Block storage - Formatage et montage
 # ============================================================
@@ -78,6 +71,13 @@
     fstype: ext4
     opts: defaults,nofail
     state: mounted
+
+- name: Set ownership on data directory
+  ansible.builtin.file:
+    path: "{{ block_storage_mount }}"
+    owner: "{{ rstudio_user }}"
+    group: "{{ rstudio_user }}"
+    recurse: yes
 
 # ============================================================
 # 4. Miniforge / Conda
