@@ -17,8 +17,15 @@ terraform {
   }
 }
 
+variable "os_username" {}
+variable "os_password" {}
+variable "service_name" {}
+
 provider "openstack" {
   auth_url  = "https://auth.cloud.ovh.net/v3/"
+  tenant_id = var.service_name
+  user_name = var.os_username
+  password  = var.os_password
   region    = "GRA9"
 }
 
