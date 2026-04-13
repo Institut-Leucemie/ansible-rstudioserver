@@ -201,10 +201,17 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
+# --- TERRAFORM ---
+# Dossier de travail local de Terraform (contient les providers binaires)
+.terraform/
+
+# Fichiers de variables (peuvent contenir des secrets)
+*.tfvars
+*.tfvars.json
+
+# Fichiers d'état local (puisque l'état est configuré sur S3)
+*.tfstate
+*.tfstate.*
 
 # secrets
 .vault_pass*
