@@ -2,5 +2,13 @@
 - name: Deploy RStudio Server for bioinfo analysis
   hosts: rstudio
   become: true
+  pre_tasks:
+    - name: Attendre la fin de cloud-init
+      ansible.builtin.raw: cloud-init status --wait
+      changed_when: false
+
+    - name: Définir le fuseau horaire
+      community.general.timezone:
+        name: Europe/Paris
   roles:
     - rstudio_server
