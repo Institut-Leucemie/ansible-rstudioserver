@@ -199,7 +199,7 @@
     state: started
 
 - name: Ensure rstudio-server is started
-  ansible.builtin.service:
-    name: rstudio-server
-    state: started
-    enabled: yes
+  ansible.builtin.shell: |
+    systemctl reset-failed rstudio-server || true
+    systemctl restart rstudio-server
+  changed_when: true
