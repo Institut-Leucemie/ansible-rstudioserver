@@ -26,3 +26,6 @@ rstudio_port: 8787
 rclone_remote_name: ovh_s3
 rclone_bucket: marie-rstudio
 rclone_sync_path: /data
+
+# SSH (surchargeable par l'app Flask via -e)
+ssh_key_path: "~/.ssh/id_ed25519_OVH-IdL"
