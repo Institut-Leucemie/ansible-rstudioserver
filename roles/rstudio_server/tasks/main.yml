@@ -79,6 +79,13 @@
     group: "{{ rstudio_user }}"
     recurse: yes
 
+- name: Create symlink to data in user home
+  ansible.builtin.file:
+    src: "{{ block_storage_mount }}"
+    dest: "/home/{{ rstudio_user }}/data"
+    state: link
+    owner: "{{ rstudio_user }}"
+    group: "{{ rstudio_user }}"
 # ============================================================
 # 4. Miniforge / Conda
 # ============================================================
