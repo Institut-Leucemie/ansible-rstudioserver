@@ -5,8 +5,8 @@
 rstudio_mode: dedicated
 
 # === Utilisateur (mode dedicated uniquement) ===
-rstudio_user: rstudio
-rstudio_password: changeme
+rstudio_user: "{{ vault_rstudio_user | default('rstudio') }}"
+rstudio_password: "{{ vault_rstudio_password | default('changeme') }}"
 
 # === Block storage (mode dedicated uniquement) ===
 block_storage_device: /dev/sdb
@@ -30,7 +30,7 @@ rstudio_version: "2026.01.2-418"
 # === Rclone / S3 (mode dedicated uniquement) ===
 rstudio_enable_rclone: true
 rclone_remote_name: ovh_s3
-rclone_bucket: ""
+rclone_bucket: "{{ vault_rclone_bucket | default('') }}"
 rclone_sync_path: /data
 
 # SSH (surchargeable par l'app Flask via -e)
