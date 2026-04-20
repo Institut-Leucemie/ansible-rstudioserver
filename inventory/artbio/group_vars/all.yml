@@ -9,3 +9,21 @@ r_packages:
   - r-biocmanager
   - r-seurat
   - r-tidyverse
+  - r-devtools
+  - r-pheatmap
+  - r-hdf5r
+  - r-arrow
+  - r-monocle3
+  - bioconductor-deseq2
+  - bioconductor-edger
+  - bioconductor-clusterprofiler
+  - bioconductor-dexseq
+  - bioconductor-sva
+  - bioconductor-isoformswitchanalyzer
+  - bioconductor-tximport
+  - bioconductor-tximeta
+  - bioconductor-fgsea
+  - jags
+  - scrublet
+  - umap-learn
+  - scikit-learn
