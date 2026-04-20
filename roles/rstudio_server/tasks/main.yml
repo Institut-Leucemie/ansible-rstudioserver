@@ -1,11 +1,10 @@
 ---
 # ============================================================
-# 1. OS - Mise à jour et paquets de base
+# 1. OS — Paquets de base pour la compilation R et les libs
 # ============================================================
-- name: Update apt cache and upgrade packages
+- name: Update apt cache
   ansible.builtin.apt:
     update_cache: yes
-    upgrade: dist
     cache_valid_time: 3600
 
 - name: Install base packages
@@ -22,39 +21,49 @@
       - libfontconfig1-dev
       - libharfbuzz-dev
       - libfribidi-dev
-      - rclone
       - jq
     state: present
 
+- name: Install rclone (dedicated mode only)
+  ansible.builtin.apt:
+    name: rclone
+    state: present
+  when: rstudio_mode == 'dedicated'
+
 # ============================================================
-# 2. Utilisatrice
+# 2. Utilisateur (mode dedicated uniquement)
 # ============================================================
-- name: Create user account
+- name: Create dedicated user account
   ansible.builtin.user:
     name: "{{ rstudio_user }}"
     shell: /bin/bash
     create_home: yes
+  when: rstudio_mode == 'dedicated'
 
-- name: Set user password
+- name: Set dedicated user password
   ansible.builtin.shell:
     cmd: echo '{{ rstudio_user }}:{{ rstudio_password }}' | chpasswd
   changed_when: true
   no_log: true
+  when: rstudio_mode == 'dedicated'
 
 # ============================================================
-# 3. Block storage - Formatage et montage
+# 3. Block storage (mode dedicated uniquement)
 # ============================================================
 - name: Check if block storage is formatted
   ansible.builtin.command: blkid {{ block_storage_device }}
   register: blkid_result
   failed_when: false
   changed_when: false
+  when: rstudio_mode == 'dedicated'
 
 - name: Format block storage as ext4
   ansible.builtin.filesystem:
     fstype: ext4
     dev: "{{ block_storage_device }}"
-  when: blkid_result.rc != 0
+  when:
+    - rstudio_mode == 'dedicated'
+    - blkid_result.rc != 0
 
 - name: Create mount point
   ansible.builtin.file:
@@ -63,6 +72,7 @@
     owner: "{{ rstudio_user }}"
     group: "{{ rstudio_user }}"
     mode: "0755"
+  when: rstudio_mode == 'dedicated'
 
 - name: Mount block storage
   ansible.builtin.mount:
@@ -71,6 +81,7 @@
     fstype: ext4
     opts: defaults,nofail
     state: mounted
+  when: rstudio_mode == 'dedicated'
 
 - name: Set ownership on data directory
   ansible.builtin.file:
@@ -78,6 +89,7 @@
     owner: "{{ rstudio_user }}"
     group: "{{ rstudio_user }}"
     recurse: yes
+  when: rstudio_mode == 'dedicated'
 
 - name: Create symlink to data in user home
   ansible.builtin.file:
@@ -86,6 +98,8 @@
     state: link
     owner: "{{ rstudio_user }}"
     group: "{{ rstudio_user }}"
+  when: rstudio_mode == 'dedicated'
+
 # ============================================================
 # 4. Miniforge / Conda
 # ============================================================
@@ -146,7 +160,7 @@
   notify: restart rstudio-server
 
 # ============================================================
-# 6. Rclone - Configuration S3 OVH
+# 6. Rclone — Configuration S3 OVH (mode dedicated uniquement)
 # ============================================================
 - name: Create rclone config directory
   ansible.builtin.file:
@@ -155,6 +169,7 @@
     owner: "{{ rstudio_user }}"
     group: "{{ rstudio_user }}"
     mode: "0700"
+  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
 
 - name: Deploy rclone config
   ansible.builtin.template:
@@ -163,9 +178,10 @@
     owner: "{{ rstudio_user }}"
     group: "{{ rstudio_user }}"
     mode: "0600"
+  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
 
 # ============================================================
-# 7. Sync S3 au shutdown
+# 7. Sync S3 au shutdown (mode dedicated uniquement)
 # ============================================================
 - name: Deploy S3 sync script
   ansible.builtin.copy:
@@ -176,6 +192,7 @@
       rclone sync {{ block_storage_mount }} {{ rclone_remote_name }}:{{ rclone_bucket }} \
         --log-file=/var/log/rclone-sync.log \
         --log-level INFO
+  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
 
 - name: Deploy systemd sync-on-shutdown service
   ansible.builtin.copy:
@@ -194,17 +211,19 @@
 
       [Install]
       WantedBy=multi-user.target
-
-- name: Reload systemd
-  ansible.builtin.systemd:
-    daemon_reload: yes
+  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
+  notify: reload systemd
 
 - name: Enable sync-on-shutdown service
   ansible.builtin.systemd:
     name: sync-data-s3
     enabled: yes
     state: started
+  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
 
+# ============================================================
+# 8. Ensure RStudio Server is running
+# ============================================================
 - name: Ensure rstudio-server is started
   ansible.builtin.shell: |
     systemctl reset-failed rstudio-server || true
