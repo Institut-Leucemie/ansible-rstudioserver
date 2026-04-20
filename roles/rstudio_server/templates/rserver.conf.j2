@@ -1,5 +1,7 @@
 www-port={{ rstudio_port }}
-www-address=0.0.0.0
-www-root-path=/rstudio
+www-address={{ rstudio_bind_address }}
+{% if rstudio_root_path is defined and rstudio_root_path %}
+www-root-path={{ rstudio_root_path }}
+{% endif %}
 rsession-which-r={{ miniforge_install_dir }}/envs/{{ conda_env_name }}/bin/R
 rsession-ld-library-path={{ miniforge_install_dir }}/envs/{{ conda_env_name }}/lib
