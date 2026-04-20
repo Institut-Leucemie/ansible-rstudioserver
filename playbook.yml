@@ -6,6 +6,7 @@
     - name: Attendre la fin de cloud-init
       ansible.builtin.raw: cloud-init status --wait
       changed_when: false
+      failed_when: false
 
     - name: Définir le fuseau horaire
       community.general.timezone:
