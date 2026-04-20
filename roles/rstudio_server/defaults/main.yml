@@ -1,30 +1,36 @@
 ---
-# Utilisateur
-rstudio_user: "{{ vault_rstudio_user }}"
-rstudio_password: "{{ vault_rstudio_password }}"
+# === Mode de fonctionnement ===
+# "dedicated" = VM mono-utilisateur (leucemie)
+# "shared"    = serveur multi-utilisateur (artbio)
+rstudio_mode: dedicated
 
-# Block storage
+# === Utilisateur (mode dedicated uniquement) ===
+rstudio_user: rstudio
+rstudio_password: changeme
+
+# === Block storage (mode dedicated uniquement) ===
 block_storage_device: /dev/sdb
 block_storage_mount: /data
 
-# Miniforge / Conda
+# === Réseau ===
+rstudio_port: 8787
+rstudio_bind_address: "0.0.0.0"
+
+# === Miniforge / Conda ===
 miniforge_version: "26.1.1-3"
 miniforge_install_dir: /opt/miniforge
-conda_env_name: bioinfo
+conda_env_name: rstudio-server
 r_packages:
   - r-base
-  - r-seurat
-  - bioconductor-infercnv
   - r-biocmanager
-  - jags
 
-# RStudio Server
+# === RStudio Server ===
 rstudio_version: "2026.01.2-418"
-rstudio_port: 8787
 
-# S3 OVH / rclone
+# === Rclone / S3 (mode dedicated uniquement) ===
+rstudio_enable_rclone: true
 rclone_remote_name: ovh_s3
-rclone_bucket: marie-rstudio
+rclone_bucket: ""
 rclone_sync_path: /data
 
 # SSH (surchargeable par l'app Flask via -e)
