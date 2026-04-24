@@ -3,27 +3,33 @@ rstudio_mode: shared
 rstudio_bind_address: "127.0.0.1"
 rstudio_root_path: /rstudio
 rstudio_enable_rclone: false
-conda_env_name: rstudio-server
-r_packages:
-  - r-base
-  - r-biocmanager
-  - r-seurat
-  - r-tidyverse
-  - r-devtools
-  - r-pheatmap
-  - r-hdf5r
-  - r-arrow
-  - r-monocle3
-  - bioconductor-deseq2
-  - bioconductor-edger
-  - bioconductor-clusterprofiler
-  - bioconductor-dexseq
-  - bioconductor-sva
-  - bioconductor-isoformswitchanalyzer
-  - bioconductor-tximport
-  - bioconductor-tximeta
-  - bioconductor-fgsea
-  - jags
-  - scrublet
-  - umap-learn
-  - scikit-learn
+# Temporary: use existing conda env during migration
+conda_env_name: rstudio-server_4.3.1
+miniforge_install_dir: /opt/rstudio-server_conda/conda
+
+# TODO: after migration validated, switch to new env:
+# conda_env_name: rstudio-server
+# miniforge_install_dir: /opt/miniforge
+# r_packages:
+#   - r-base
+#   - r-biocmanager
+#   - r-seurat
+#   - r-tidyverse
+#   - r-devtools
+#   - r-pheatmap
+#   - r-hdf5r
+#   - r-arrow
+#   - r-monocle3
+#   - bioconductor-deseq2
+#   - bioconductor-edger
+#   - bioconductor-clusterprofiler
+#   - bioconductor-dexseq
+#   - bioconductor-sva
+#   - bioconductor-isoformswitchanalyzer
+#   - bioconductor-tximport
+#   - bioconductor-tximeta
+#   - bioconductor-fgsea
+#   - jags
+#   - scrublet
+#   - umap-learn
+#   - scikit-learn
