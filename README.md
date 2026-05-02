@@ -27,9 +27,6 @@ R and all packages are installed inside a conda environment, independently of th
 git clone https://github.com/institut-leucemie/ansible-rstudioserver.git
 cd ansible-rstudioserver
 
-# Install required collections
-ansible-galaxy collection install -r requirements.yml
-
 # Run against your inventory
 ansible-playbook playbook.yml -i inventory/<your-inventory>
 ```
