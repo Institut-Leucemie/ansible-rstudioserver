@@ -1,0 +1,238 @@
+---
+# ============================================================
+# RStudio Mode & Binding
+# ============================================================
+rstudio_mode: shared
+rstudio_bind_address: "127.0.0.1"
+rstudio_root_path: /rstudio
+rstudio_enable_rclone: false
+
+# ============================================================
+# Miniforge Setup
+# ============================================================
+miniforge_version: "26.1.1-3"
+miniforge_install_dir: /opt/rstudio-server_miniforge
+conda_env_name: rstudio-server_4.5.3
+
+# ============================================================
+# RStudio Server Version
+# ============================================================
+rstudio_version: "2026.04.0-526"
+
+# ============================================================
+# R PACKAGES (mamba create -c conda-forge -c bioconda ...)
+# Versions are LOOSE (no pinning) — conda negociates compatibility
+# ============================================================
+r_packages:
+  # ---- BASE R ----
+  - r-base
+  - r-biocmanager
+
+  # ---- COMPILATION & BUILD ----
+  - make
+  - cmake
+  - gcc_impl_linux-64
+  - gfortran_impl_linux-64
+  - gxx_impl_linux-64
+
+  # ---- SPATIAL TRANSCRIPTOMICS (Visium + MERFISH) ----
+  # Geospatial libs
+  - gdal
+  - proj
+  - geos
+  - libspatialite
+
+  # R spatial packages
+  - r-terra
+  - r-sf
+  - r-sp
+  - r-raster
+
+  # ---- SINGLE-CELL RNA-SEQ CORE ----
+  # Seurat ecosystem
+  - r-seurat
+  - r-seuratobject
+  - r-sctransform
+
+  # BioconductorPackages: single-cell
+  - bioconductor-singlecellexperiment
+  - bioconductor-scater
+  - bioconductor-scuttle
+  - bioconductor-batchelor
+  - bioconductor-basilisk
+  - bioconductor-basilisk.utils
+
+  # Dimensionality reduction & clustering
+  - r-uwot
+  - r-leiden
+  - r-leidenbase
+  - r-umap-learn
+  - r-annoy
+  - r-rtsne
+
+  # ---- RNA-SEQ & FUNCTIONAL ANALYSIS ----
+  - bioconductor-deseq2
+  - bioconductor-edger
+  - bioconductor-limma
+  - bioconductor-clusterprofiler
+  - bioconductor-enrichplot
+  - bioconductor-fgsea
+  - bioconductor-keggrest
+  - bioconductor-go.db
+
+  # Gene annotation
+  - bioconductor-annotationhub
+  - bioconductor-annotationdbi
+  - bioconductor-annotationfilter
+  - bioconductor-ensembldb
+  - bioconductor-biomart
+  - bioconductor-genomeinfodb
+  - bioconductor-genomicranges
+  - bioconductor-iranges
+
+  # Trajectory inference
+  - bioconductor-monocle3
+
+  # ---- VISUALIZATION ----
+  - r-ggplot2
+  - r-ggtree
+  - r-ggraph
+  - r-ggforce
+  - r-ggfortify
+  - r-ggrepel
+  - r-ggridges
+  - r-ggrastr
+  - r-scattermore
+  - r-scatterpie
+
+  - r-plotly
+  - r-patchwork
+  - r-cowplot
+  - r-gridextra
+  - r-gridgraphics
+  - r-pheatmap
+  - r-venndiagram
+  - r-shape
+  - r-viridis
+  - r-ragg
+
+  # ---- DATA WRANGLING & TABLES ----
+  - r-dplyr
+  - r-tidyr
+  - r-readr
+  - r-readxl
+  - r-data.table
+  - r-tibble
+  - r-forcats
+  - r-stringr
+  - r-lubridate
+
+  # ---- STATISTICS & MODELING ----
+  - r-lme4
+  - r-nlme
+  - r-glmnet
+  - r-caret
+  - r-rsample
+  - r-recipes
+  - r-statmod
+  - r-survival
+
+  # ---- MATRIX & LINEAR ALGEBRA ----
+  - r-matrix
+  - r-irlba
+  - r-rspectra
+
+  # ---- HDF5 & DATA I/O ----
+  - hdf5
+  - netcdf
+  - r-rhdf5
+  - r-rhdf5filters
+  - r-rhdf5lib
+  - r-hdf5r
+  - bioconductor-hdf5array
+
+  # ---- SYSTEM LIBRARIES ----
+  - curl
+  - libcurl
+  - libxml2
+  - libpq
+  - sqlite
+  - zlib
+  - bzip2
+  - xz
+  - openssl
+
+  # ---- UTILITIES ----
+  - pandoc
+  - jq
+
+  # ---- PYTHON (for reticulate integration) ----
+  # Users can install InferCNV, scanpy, etc. via: pip install --user <package>
+  - python
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - scikit-image
+  - matplotlib
+  - seaborn
+  - umap-learn
+  - numba
+
+  # ---- AWS INTEGRATION (optional) ----
+  # For accessing public single-cell datasets in S3 buckets
+  # Typically not needed by users, but kept for compatibility
+  - aws-c-auth
+  - aws-c-cal
+  - aws-c-common
+  - aws-c-compression
+  - aws-c-event-stream
+  - aws-c-http
+  - aws-c-io
+  - aws-c-mqtt
+  - aws-c-s3
+  - aws-c-sdkutils
+  - aws-checksums
+  - aws-crt-cpp
+  - aws-sdk-cpp
+
+  # ---- R UTILITY PACKAGES ----
+  - r-devtools
+  - r-usethis
+  - r-roxygen2
+  - r-knitr
+  - r-rmarkdown
+  - r-testthat
+  - r-rcmdcheck
+
+  # ---- RStudio SERVER SUPPORT ----
+  - r-rstudioapi
+  - r-shiny
+  - r-dt
+  - r-htmltools
+  - r-htmlwidgets
+  - r-httpuv
+  - r-promises
+  - r-later
+
+  # ---- ADDITIONAL ANALYSIS TOOLS ----
+  - r-vroom
+  - r-arrow
+  - r-purrr
+  - r-glue
+  - r-rlang
+  - r-cli
+  - r-crayon
+  - r-prettyunits
+  - r-progress
+  - r-withr
+  - r-memoise
+
+# ============================================================
+# POST-INSTALL NOTES FOR USERS
+# ============================================================
+# - InferCNV: Users install via R: install.packages("InferCNV") 
+#            (from GitHub: remotes::install_github("broadinstitute/infercnv"))
+# - Custom packages: Users manage via install.packages() or conda install --name rstudio-server_4.5.3 <pkg>
+# - Python packages: pip install --user <package> (within RStudio terminal)
+# ============================================================

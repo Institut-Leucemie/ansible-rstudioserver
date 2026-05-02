@@ -1,0 +1,239 @@
+name: rstudio-server_4.5.3
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  # ============================================================
+  # BASE R 4.5.3 (PINNED) — rest: LOOSE versions
+  # Use: conda env create -f this_file.yml
+  # ============================================================
+  - r-base=4.5.3
+  - r-biocmanager
+
+  # ============================================================
+  # COMPILATION & BUILD TOOLS
+  # ============================================================
+  - make
+  - cmake
+  - gcc_impl_linux-64
+  - gfortran_impl_linux-64
+  - gxx_impl_linux-64
+  - libgcc-ng
+  - libgfortran-ng
+  - libstdcxx-ng
+
+  # ============================================================
+  # SPATIAL TRANSCRIPTOMICS CORE (Visium + MERFISH)
+  # ============================================================
+  - gdal
+  - proj
+  - geos
+  - libspatialite
+
+  # R spatial packages
+  - r-terra
+  - r-sf
+  - r-sp
+  - r-raster
+
+  # ============================================================
+  # SINGLE-CELL RNA-SEQ CORE
+  # ============================================================
+  - r-seurat
+  - r-seuratobject
+  - r-sctransform
+
+  - bioconductor-singlecellexperiment
+  - bioconductor-scater
+  - bioconductor-scuttle
+  - bioconductor-batchelor
+  - bioconductor-basilisk
+  - bioconductor-basilisk.utils
+
+  - r-uwot
+  - r-leiden
+  - r-leidenbase
+  - r-umap-learn
+  - r-annoy
+  - r-rtsne
+
+  # ============================================================
+  # RNA-SEQ & FUNCTIONAL ANALYSIS
+  # ============================================================
+  - bioconductor-deseq2
+  - bioconductor-edger
+  - bioconductor-limma
+  - bioconductor-clusterprofiler
+  - bioconductor-enrichplot
+  - bioconductor-fgsea
+  - bioconductor-keggrest
+  - bioconductor-go.db
+
+  - bioconductor-annotationhub
+  - bioconductor-annotationdbi
+  - bioconductor-annotationfilter
+  - bioconductor-ensembldb
+  - bioconductor-biomart
+  - bioconductor-genomeinfodb
+  - bioconductor-genomicranges
+  - bioconductor-iranges
+
+  - bioconductor-monocle3
+
+  # ============================================================
+  # VISUALIZATION
+  # ============================================================
+  - r-ggplot2
+  - r-ggtree
+  - r-ggraph
+  - r-ggforce
+  - r-ggfortify
+  - r-ggrepel
+  - r-ggridges
+  - r-ggrastr
+  - r-scattermore
+  - r-scatterpie
+
+  - r-plotly
+  - r-patchwork
+  - r-cowplot
+  - r-gridextra
+  - r-gridgraphics
+  - r-pheatmap
+  - r-venndiagram
+  - r-shape
+  - r-viridis
+  - r-ragg
+
+  # ============================================================
+  # DATA WRANGLING & TABLES
+  # ============================================================
+  - r-dplyr
+  - r-tidyr
+  - r-readr
+  - r-readxl
+  - r-data.table
+  - r-tibble
+  - r-forcats
+  - r-stringr
+  - r-lubridate
+
+  # ============================================================
+  # STATISTICS & MODELING
+  # ============================================================
+  - r-lme4
+  - r-nlme
+  - r-glmnet
+  - r-caret
+  - r-rsample
+  - r-recipes
+  - r-statmod
+  - r-survival
+
+  # ============================================================
+  # MATRIX & LINEAR ALGEBRA
+  # ============================================================
+  - r-matrix
+  - r-irlba
+  - r-rspectra
+
+  # ============================================================
+  # HDF5 & DATA I/O
+  # ============================================================
+  - hdf5
+  - netcdf
+  - r-rhdf5
+  - r-rhdf5filters
+  - r-rhdf5lib
+  - r-hdf5r
+  - bioconductor-hdf5array
+
+  # ============================================================
+  # SYSTEM LIBRARIES (for build + I/O)
+  # ============================================================
+  - curl
+  - libcurl
+  - libxml2
+  - libpq
+  - sqlite
+  - zlib
+  - bzip2
+  - xz
+  - openssl
+
+  # ============================================================
+  # UTILITIES
+  # ============================================================
+  - pandoc
+  - jq
+
+  # ============================================================
+  # PYTHON (for reticulate integration)
+  # Users can install InferCNV, scanpy, etc. via: pip install --user
+  # ============================================================
+  - python
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - scikit-image
+  - matplotlib
+  - seaborn
+  - umap-learn
+  - numba
+
+  # ============================================================
+  # AWS INTEGRATION (optional)
+  # For accessing public single-cell datasets in S3 buckets
+  # ============================================================
+  - aws-c-auth
+  - aws-c-cal
+  - aws-c-common
+  - aws-c-compression
+  - aws-c-event-stream
+  - aws-c-http
+  - aws-c-io
+  - aws-c-mqtt
+  - aws-c-s3
+  - aws-c-sdkutils
+  - aws-checksums
+  - aws-crt-cpp
+  - aws-sdk-cpp
+
+  # ============================================================
+  # R UTILITY PACKAGES
+  # ============================================================
+  - r-devtools
+  - r-usethis
+  - r-roxygen2
+  - r-knitr
+  - r-rmarkdown
+  - r-testthat
+  - r-rcmdcheck
+
+  # ============================================================
+  # RStudio SERVER SUPPORT
+  # ============================================================
+  - r-rstudioapi
+  - r-shiny
+  - r-dt
+  - r-htmltools
+  - r-htmlwidgets
+  - r-httpuv
+  - r-promises
+  - r-later
+
+  # ============================================================
+  # ADDITIONAL ANALYSIS TOOLS
+  # ============================================================
+  - r-vroom
+  - r-arrow
+  - r-purrr
+  - r-glue
+  - r-rlang
+  - r-cli
+  - r-crayon
+  - r-prettyunits
+  - r-progress
+  - r-withr
+  - r-memoise

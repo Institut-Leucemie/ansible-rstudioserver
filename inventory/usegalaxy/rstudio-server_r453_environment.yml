@@ -1,0 +1,262 @@
+name: rstudio-server_4.5.3
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  # ============================================================
+  # BASE R 4.5.3
+  # ============================================================
+  - r-base=4.5.3
+  - r-biocmanager::1.30.22  # For BioconductorPackages
+  
+  # ============================================================
+  # COMPILATION & BUILD TOOLS
+  # ============================================================
+  - make
+  - cmake
+  - gcc_impl_linux-64
+  - gfortran_impl_linux-64
+  - gxx_impl_linux-64
+  - libgcc-ng
+  - libgfortran-ng
+  - libstdcxx-ng
+  
+  # ============================================================
+  # SPATIAL TRANSCRIPTOMICS CORE (Visium + MERFISH)
+  # ============================================================
+  # Geospatial data handling
+  - gdal=3.7.2
+  - proj=9.3.0
+  - geos=3.12.0
+  - libspatialite=5.1.0
+  
+  # R spatial packages
+  - r-terra=1.7_55
+  - r-sf=1.0_14
+  - r-sp=2.0_0
+  - r-raster=3.6_26
+  
+  # ============================================================
+  # SINGLE-CELL RNA-SEQ CORE
+  # ============================================================
+  # Seurat ecosystem
+  - r-seurat=5.1.0
+  - r-seuratobject=5.0.2
+  - r-sctransform=0.4.1
+  
+  # BioconductorPackages: core single-cell
+  - bioconductor-singlecellexperiment=1.22.0
+  - bioconductor-scater=1.28.0
+  - bioconductor-scuttle=1.10.1
+  - bioconductor-batchelor=1.16.0
+  - bioconductor-basilisk=1.12.1
+  - bioconductor-basilisk.utils=1.12.1
+  
+  # Dimensionality reduction + clustering
+  - r-uwot=0.1.16
+  - r-leiden=0.4.3
+  - r-leidenbase=0.1.18
+  - r-umap-learn=0.5.7
+  - r-annoy=1.17.3
+  - r-rtsne=0.16
+  
+  # ============================================================
+  # RNA-SEQ & FUNCTIONAL ANALYSIS
+  # ============================================================
+  - bioconductor-deseq2=1.40.2
+  - bioconductor-edger=3.42.4
+  - bioconductor-limma=3.56.2
+  - bioconductor-clusterprofiler=4.8.1
+  - bioconductor-enrichplot=1.20.0
+  - bioconductor-fgsea=1.26.0
+  - bioconductor-keggrest=1.40.0
+  - bioconductor-go.db=3.17.0
+  
+  # Gene annotation
+  - bioconductor-annotationhub=3.8.0
+  - bioconductor-annotationdbi=1.62.2
+  - bioconductor-annotationfilter=1.24.0
+  - bioconductor-ensembldb=2.24.0
+  - bioconductor-biomart=2.56.1
+  - bioconductor-genomeinfodb=1.36.1
+  - bioconductor-genomicranges=1.52.0
+  - bioconductor-iranges=2.34.1
+  
+  # Trajectory inference
+  - bioconductor-monocle3=1.3.1
+  
+  # ============================================================
+  # VISUALIZATION
+  # ============================================================
+  - r-ggplot2=3.4.3
+  - r-ggtree=3.8.0
+  - r-ggraph=2.1.0
+  - r-ggforce
+  - r-ggfortify=0.4.16
+  - r-ggrepel=0.9.3
+  - r-ggridges=0.5.4
+  - r-ggrastr=1.0.2
+  - r-scattermore=1.2
+  - r-scatterpie=0.2.1
+  
+  - r-plotly=4.10.2
+  - r-patchwork=1.1.3
+  - r-cowplot=1.1.1
+  - r-gridextra=2.3
+  - r-gridgraphics=0.5_1
+  - r-pheatmap=1.0.12
+  - r-venndiagram=1.7.3
+  - r-shape=1.4.6
+  - r-viridis=0.6.4
+  - r-ragg=1.2.5
+  
+  # ============================================================
+  # DATA WRANGLING & TABLES
+  # ============================================================
+  - r-dplyr=1.1.3
+  - r-tidyr=1.3.0
+  - r-readr=2.1.4
+  - r-readxl=1.4.3
+  - r-data.table=1.14.8
+  - r-tibble=3.2.1
+  - r-forcats=1.0.0
+  - r-stringr=1.5.1
+  - r-lubridate=1.9.2
+  
+  # ============================================================
+  # STATISTICS & MODELING
+  # ============================================================
+  - r-lme4=1.1_34
+  - r-nlme=3.1_163
+  - r-glmnet
+  - r-caret=6.0_94
+  - r-rsample=1.2.1
+  - r-recipes=1.0.8
+  - r-statmod=1.5.0
+  - r-survival=3.5_7
+  
+  # ============================================================
+  # MATRIX & LINEAR ALGEBRA
+  # ============================================================
+  - libblas=3.9.0
+  - liblapack=3.9.0
+  - libopenblas=0.3.24
+  - r-matrix=1.6_5
+  - r-irlba=2.3.5.1
+  - r-rspectra=0.16_1
+  
+  # ============================================================
+  # HDF5 & DATA I/O
+  # ============================================================
+  - hdf5=1.14.2
+  - netcdf=4.9.2
+  - r-rhdf5=2.44.0
+  - r-rhdf5filters=1.12.1
+  - r-rhdf5lib=1.22.0
+  - r-hdf5r=1.3.8
+  - bioconductor-hdf5array=1.28.1
+  
+  # ============================================================
+  # SYSTEM LIBRARIES (for build + I/O)
+  # ============================================================
+  - curl=8.8.0
+  - libcurl=8.8.0
+  - libxml2=2.11.6
+  - libpq=16.2
+  - sqlite=3.43.0
+  - zlib=1.2.13
+  - bzip2=1.0.8
+  - xz=5.2.6
+  - openssl=3.6.1
+  
+  # ============================================================
+  # UTILITIES
+  # ============================================================
+  - pandoc=3.1.3
+  - jq=1.6
+  - plocate=1.1.19
+  - grep
+  - sed
+  - tar
+  - gzip
+  
+  # ============================================================
+  # PYTHON (for reticulate integration)
+  # Note: Users may install InferCNV, scanpy, etc. via pip
+  # ============================================================
+  - python=3.11.5
+  - numpy=1.26.0
+  - scipy=1.15.2
+  - pandas=2.2.3
+  - scikit-learn=1.6.1
+  - scikit-image=0.25.2
+  - matplotlib=3.10.1
+  - seaborn
+  - umap-learn=0.5.7
+  - numba=0.61.2
+  - joblib=1.4.2
+  
+  # ============================================================
+  # AWS INTEGRATION (optional)
+  # Note: For accessing public single-cell datasets in S3 buckets
+  # Users typically won't need these; keep for compatibility
+  # ============================================================
+  - aws-c-auth
+  - aws-c-cal
+  - aws-c-common
+  - aws-c-compression
+  - aws-c-event-stream
+  - aws-c-http
+  - aws-c-io
+  - aws-c-mqtt
+  - aws-c-s3
+  - aws-c-sdkutils
+  - aws-checksums
+  - aws-crt-cpp
+  - aws-sdk-cpp
+  
+  # ============================================================
+  # R UTILITY PACKAGES
+  # ============================================================
+  - r-devtools=2.4.5
+  - r-usethis=2.2.2
+  - r-roxygen2=7.2.3
+  - r-knitr=1.44
+  - r-rmarkdown=2.25
+  - r-testthat=3.2.0
+  - r-rcmdcheck=1.4.0
+  
+  # ============================================================
+  # RStudio SERVER SUPPORT
+  # ============================================================
+  - r-rstudioapi=0.15.0
+  - r-shiny=1.7.5
+  - r-dt=0.28
+  - r-htmltools=0.5.6
+  - r-htmlwidgets=1.6.2
+  - r-httpuv=1.6.11
+  - r-promises=1.2.1
+  - r-later=1.3.1
+  
+  # ============================================================
+  # ADDITIONAL ANALYSIS TOOLS
+  # ============================================================
+  - r-vroom=1.6.3
+  - r-arrow=13.0.0
+  - r-purrr=1.0.2
+  - r-glue=1.6.2
+  - r-rlang=1.1.1
+  - r-cli=3.6.1
+  - r-crayon=1.5.2
+  - r-prettyunits=1.1.1
+  - r-progress=1.2.2
+  - r-withr=2.5.0
+  - r-memoise=2.0.1
+
+# ============================================================
+# BUILD CONFIGURATION
+# ============================================================
+# Note: No explicit pip dependencies here — users install
+# InferCNV, custom packages via: pip install --user <package>
+# or: R> install.packages() / BiocManager::install()
+# ============================================================
