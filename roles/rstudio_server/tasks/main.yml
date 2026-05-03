@@ -129,6 +129,15 @@
       {{ r_packages | join(' ') }}
     creates: "{{ miniforge_install_dir }}/envs/{{ conda_env_name }}"
 
+- name: Set PROJ_DATA in Renviron.site
+  ansible.builtin.lineinfile:
+    path: "{{ miniforge_install_dir }}/envs/{{ conda_env_name }}/lib/R/etc/Renviron.site"
+    line: "PROJ_DATA={{ miniforge_install_dir }}/envs/{{ conda_env_name }}/share/proj"
+    create: yes
+    owner: root
+    group: root
+    mode: "0644"
+
 # ============================================================
 # 5. RStudio Server
 # ============================================================
