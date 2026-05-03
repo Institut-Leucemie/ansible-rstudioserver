@@ -204,6 +204,7 @@ r_packages:
   - r-rmarkdown
   - r-testthat
   - r-rcmdcheck
+  - r-grr
 
   # ---- RStudio SERVER SUPPORT ----
   - r-rstudioapi
