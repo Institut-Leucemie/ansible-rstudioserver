@@ -138,6 +138,15 @@
     group: root
     mode: "0644"
 
+- name: Set conda env bin in PATH via Renviron.site
+  ansible.builtin.lineinfile:
+    path: "{{ miniforge_install_dir }}/envs/{{ conda_env_name }}/lib/R/etc/Renviron.site"
+    line: "PATH={{ miniforge_install_dir }}/envs/{{ conda_env_name }}/bin:${PATH}"
+    create: yes
+    owner: root
+    group: root
+    mode: "0644"
+
 # ============================================================
 # 5. RStudio Server
 # ============================================================
