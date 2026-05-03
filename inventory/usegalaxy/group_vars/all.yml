@@ -66,7 +66,6 @@ r_packages:
   - r-uwot
   - r-leiden
   - r-leidenbase
-  - r-annoy
   - r-rtsne
 
   # ---- RNA-SEQ & FUNCTIONAL ANALYSIS ----
@@ -145,9 +144,9 @@ r_packages:
   # ---- HDF5 & DATA I/O ----
   - hdf5
   - libnetcdf
-  - r-rhdf5
-  - r-rhdf5filters
-  - r-rhdf5lib
+  - bioconductor-rhdf5
+  - bioconductor-rhdf5filters
+  - bioconductor-rhdf5lib
   - r-hdf5r
   - bioconductor-hdf5array
 
