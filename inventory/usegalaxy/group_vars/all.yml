@@ -196,6 +196,7 @@ r_packages:
   - aws-sdk-cpp
 
   # ---- R UTILITY PACKAGES ----
+  - r-remotes
   - r-devtools
   - r-usethis
   - r-roxygen2
