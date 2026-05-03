@@ -66,7 +66,6 @@ r_packages:
   - r-uwot
   - r-leiden
   - r-leidenbase
-  - r-umap-learn
   - r-annoy
   - r-rtsne
 
@@ -91,11 +90,11 @@ r_packages:
   - bioconductor-iranges
 
   # Trajectory inference
-  - bioconductor-monocle3
+  - r-monocle3
 
   # ---- VISUALIZATION ----
   - r-ggplot2
-  - r-ggtree
+  - bioconductor-ggtree
   - r-ggraph
   - r-ggforce
   - r-ggfortify
@@ -144,7 +143,7 @@ r_packages:
 
   # ---- HDF5 & DATA I/O ----
   - hdf5
-  - netcdf
+  - libnetcdf
   - r-rhdf5
   - r-rhdf5filters
   - r-rhdf5lib
@@ -168,7 +167,7 @@ r_packages:
 
   # ---- PYTHON (for reticulate integration) ----
   # Users can install InferCNV, scanpy, etc. via: pip install --user <package>
-  - python
+  - python=3.12
   - numpy
   - scipy
   - pandas
