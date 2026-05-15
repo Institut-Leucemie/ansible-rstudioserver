@@ -2,7 +2,6 @@
 rstudio_mode: shared
 rstudio_bind_address: "127.0.0.1"
 rstudio_root_path: /rstudio
-rstudio_enable_rclone: false
 conda_env_name: rstudio-server
 r_packages:
   - r-base
