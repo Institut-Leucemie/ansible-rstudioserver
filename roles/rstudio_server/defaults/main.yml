@@ -27,11 +27,5 @@ r_packages:
 # === RStudio Server ===
 rstudio_version: "2026.01.2-418"
 
-# === Rclone / S3 (mode dedicated uniquement) ===
-rstudio_enable_rclone: true
-rclone_remote_name: ovh_s3
-rclone_bucket: "{{ vault_rclone_bucket | default('') }}"
-rclone_sync_path: /data
-
 # SSH (surchargeable par l'app Flask via -e)
 ssh_key_path: "~/.ssh/id_ed25519_OVH-IdL"

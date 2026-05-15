@@ -84,13 +84,6 @@ resource "openstack_compute_volume_attach_v2" "rstudio_data_attach" {
   volume_id   = openstack_blockstorage_volume_v3.rstudio_data.id
 }
 
-resource "aws_s3_bucket" "s3_rstudio" {
-  bucket = "marie-rstudio"
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 output "rstudio_ip" {
   value = openstack_compute_instance_v2.rstudio_vm.network[0].fixed_ip_v4
 }
