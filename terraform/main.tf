@@ -1,7 +1,6 @@
 terraform {
   required_providers {
     openstack = { source = "terraform-provider-openstack/openstack", version = "~> 1.53.0" }
-    aws       = { source = "hashicorp/aws", version = "~> 5.0" }
   }
 
   backend "s3" {
@@ -27,16 +26,6 @@ provider "openstack" {
   user_name = var.os_username
   password  = var.os_password
   region    = "GRA9"
-}
-
-provider "aws" {
-  region                      = "gra"
-  skip_credentials_validation = true
-  skip_region_validation      = true
-  skip_requesting_account_id  = true
-  endpoints {
-    s3 = "https://s3.gra.io.cloud.ovh.net"
-  }
 }
 
 # --- Lookup de l'infra permanente (par nom, pas par state) ---
