@@ -24,12 +24,6 @@
       - jq
     state: present
 
-- name: Install rclone (dedicated mode only)
-  ansible.builtin.apt:
-    name: rclone
-    state: present
-  when: rstudio_mode == 'dedicated'
-
 # ============================================================
 # 2. Utilisateur (mode dedicated uniquement)
 # ============================================================
@@ -178,69 +172,7 @@
   notify: restart rstudio-server
 
 # ============================================================
-# 6. Rclone — Configuration S3 OVH (mode dedicated uniquement)
-# ============================================================
-- name: Create rclone config directory
-  ansible.builtin.file:
-    path: "/home/{{ rstudio_user }}/.config/rclone"
-    state: directory
-    owner: "{{ rstudio_user }}"
-    group: "{{ rstudio_user }}"
-    mode: "0700"
-  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
-
-- name: Deploy rclone config
-  ansible.builtin.template:
-    src: rclone.conf.j2
-    dest: "/home/{{ rstudio_user }}/.config/rclone/rclone.conf"
-    owner: "{{ rstudio_user }}"
-    group: "{{ rstudio_user }}"
-    mode: "0600"
-  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
-
-# ============================================================
-# 7. Sync S3 au shutdown (mode dedicated uniquement)
-# ============================================================
-- name: Deploy S3 sync script
-  ansible.builtin.copy:
-    dest: /usr/local/bin/sync-data-s3.sh
-    mode: "0755"
-    content: |
-      #!/bin/bash
-      rclone sync {{ block_storage_mount }} {{ rclone_remote_name }}:{{ rclone_bucket }} \
-        --log-file=/var/log/rclone-sync.log \
-        --log-level INFO
-  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
-
-- name: Deploy systemd sync-on-shutdown service
-  ansible.builtin.copy:
-    dest: /etc/systemd/system/sync-data-s3.service
-    content: |
-      [Unit]
-      Description=Sync data to S3 before shutdown
-      DefaultDependencies=no
-      Before=shutdown.target reboot.target halt.target
-
-      [Service]
-      Type=oneshot
-      ExecStart=/bin/true
-      ExecStop=/usr/local/bin/sync-data-s3.sh
-      RemainAfterExit=yes
-
-      [Install]
-      WantedBy=multi-user.target
-  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
-  notify: reload systemd
-
-- name: Enable sync-on-shutdown service
-  ansible.builtin.systemd:
-    name: sync-data-s3
-    enabled: yes
-    state: started
-  when: rstudio_mode == 'dedicated' and rstudio_enable_rclone
-
-# ============================================================
-# 8. Ensure RStudio Server is running
+# 6. Ensure RStudio Server is running
 # ============================================================
 - name: Ensure rstudio-server is started
   ansible.builtin.shell: |
